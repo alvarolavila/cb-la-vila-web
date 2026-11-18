@@ -323,7 +323,7 @@
     color:var(--gold); border:1px solid var(--gold); padding:10px 18px; border-radius:30px;
   }
   .blog-grid{
-    display:grid; grid-template-columns:repeat(4,1fr); gap:20px;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:22px;
   }
   @media(max-width:980px){.blog-grid{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:560px){.blog-grid{grid-template-columns:1fr;}}
@@ -354,18 +354,22 @@
     margin-top:36px; padding:18px 22px; border:1px dashed var(--line); border-radius:6px;
     font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--paper-dim); line-height:1.7;
   }
-  .blog-feed-embed{
-    width:100%; max-width:500px; margin:0 auto; border-radius:6px; overflow:hidden;
-    border:1px solid var(--line); background:var(--ink-2);
-    min-height:260px; display:flex; align-items:center; justify-content:center;
-  }
-  .blog-feed-embed iframe{width:100%; border:0; display:block;}
-  .blog-feed-fallback{text-align:center; margin-top:18px; font-family:'JetBrains Mono',monospace; font-size:13px;}
-  .blog-feed-fallback a{color:var(--gold);}
-  .blog-feed-placeholder{
-    color:var(--paper-dim); font-family:'JetBrains Mono',monospace; font-size:13px; padding:40px 20px; text-align:center;
-  }
-
+  .blog-card{cursor:pointer; transition:transform .2s ease, border-color .2s ease;}
+  .blog-card:hover{transform:translateY(-4px); border-color:var(--gold);}
+  .blog-thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .blog-date{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--paper-dim);}
+  .blog-more{margin-top:auto; color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:12px;}
+  .blog-empty{text-align:center; color:var(--paper-dim); padding:30px 0;}
+  .blog-empty a{color:var(--gold);}
+  .post-modal{position:fixed; inset:0; z-index:200; background:rgba(8,8,10,.85); display:flex; align-items:center; justify-content:center; padding:20px; overflow-y:auto;}
+  .post-modal[hidden]{display:none;}
+  .post-modal-box{background:var(--ink-2); border:1px solid var(--line); border-radius:8px; max-width:720px; width:100%; max-height:90vh; overflow-y:auto; position:relative;}
+  .post-modal-box img{width:100%; max-height:380px; object-fit:cover; display:block;}
+  .post-modal-body{padding:26px 28px 32px;}
+  .post-modal-body h3{font-family:'Anton',sans-serif; font-size:clamp(24px,4vw,34px); color:var(--paper); text-transform:uppercase; margin:8px 0 4px; font-weight:400;}
+  .post-date{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--paper-dim); margin-bottom:18px;}
+  #postText p{color:var(--paper); line-height:1.7; margin-bottom:14px; font-size:15.5px;}
+  .post-close{position:absolute; top:10px; right:14px; z-index:3; background:rgba(16,16,20,.7); color:var(--paper); border:0; width:36px; height:36px; border-radius:50%; font-size:24px; cursor:pointer;}
   /* ---------- HISTORIA / COURT TIMELINE ---------- */
   .history{
     background:var(--ink-2);
@@ -681,11 +685,20 @@
       </div>
       <a href="https://www.facebook.com/BasquetLaVila" target="_blank" class="ig-handle">📘 Basquet La Vila</a>
     </div>
-    <div class="blog-feed-embed reveal" id="fbFeedEmbed"
-      data-fb-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FBasquetLaVila&tabs=timeline&width=500&height=700&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true">
-      <div class="blog-feed-placeholder">📘 Carregant publicacions de Facebook…</div>
+    <div class="blog-grid" id="blogGrid"></div>
+    <p class="blog-empty" id="blogEmpty" hidden>Aviat publicarem ací les novetats del club. Mentrestant, segueix-nos a <a href="https://www.facebook.com/BasquetLaVila" target="_blank" rel="noopener">Facebook</a> i <a href="https://www.instagram.com/cblavila" target="_blank" rel="noopener">Instagram</a>.</p>
+    <div class="post-modal" id="postModal" hidden>
+      <div class="post-modal-box" role="dialog" aria-modal="true">
+        <button class="post-close" id="postClose" aria-label="Tancar">&times;</button>
+        <img id="postImg" alt="" hidden>
+        <div class="post-modal-body">
+          <span class="blog-tag" id="postTag"></span>
+          <h3 id="postTitle"></h3>
+          <div class="post-date" id="postDate"></div>
+          <div id="postText"></div>
+        </div>
+      </div>
     </div>
-    <p class="blog-feed-fallback"><a href="https://www.facebook.com/BasquetLaVila" target="_blank" rel="noopener">Veure totes les publicacions a Facebook →</a> · <a href="https://www.instagram.com/cblavila" target="_blank" rel="noopener">Instagram @cblavila →</a></p>
   </div>
 </section>
 
@@ -1011,31 +1024,53 @@
     document.getElementById('formMsg').classList.add('show');
   });
 
-  // ---- lazy-load Facebook feed only when the user scrolls near it (keeps initial load fast) ----
-  const fbFeedEmbed = document.getElementById('fbFeedEmbed');
-  if(fbFeedEmbed){
-    const fbIo = new IntersectionObserver((entries)=>{
-      entries.forEach(en=>{
-        if(en.isIntersecting){
-          const iframe = document.createElement('iframe');
-          iframe.src = fbFeedEmbed.dataset.fbSrc;
-          iframe.width = '500';
-          iframe.style.maxWidth = '100%';
-          iframe.height = '700';
-          iframe.style.border = 'none';
-          iframe.style.overflow = 'hidden';
-          iframe.scrolling = 'no';
-          iframe.loading = 'lazy';
-          iframe.setAttribute('allowfullscreen', 'true');
-          iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
-          fbFeedEmbed.innerHTML = '';
-          fbFeedEmbed.appendChild(iframe);
-          fbIo.unobserve(fbFeedEmbed);
-        }
-      });
-    }, {rootMargin:'300px'});
-    fbIo.observe(fbFeedEmbed);
-  }
+  // ---- BLOG (Sala de premsa) ----
+  // Per afegir una entrada nova, afig un objecte al principi d'esta llista.
+  // image és opcional (ruta tipus "blog/foto.jpg"). body: un text per paràgraf.
+  const BLOG_POSTS = [
+    // {date:"2026-11-18", tag:"Club", title:"Títol", excerpt:"Resum curt.", image:"blog/foto.jpg", body:["Paràgraf 1","Paràgraf 2"]},
+  ];
+  (function(){
+    const grid = document.getElementById('blogGrid');
+    const empty = document.getElementById('blogEmpty');
+    const posts = BLOG_POSTS.slice().sort((a,b)=> b.date.localeCompare(a.date));
+    if(!posts.length){ empty.hidden = false; return; }
+    const fmt = d => new Date(d+'T12:00:00').toLocaleDateString('ca-ES',{day:'numeric',month:'long',year:'numeric'});
+    const esc = s => String(s).replace(/[&<>"]/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+    posts.forEach((p,i)=>{
+      const card = document.createElement('article');
+      card.className = 'blog-card';
+      card.tabIndex = 0;
+      card.innerHTML = `
+        <div class="blog-thumb">${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : '<div class="ph-icon">🏀</div>'}</div>
+        <div class="blog-body">
+          <span class="blog-tag">${esc(p.tag||'Club')}</span>
+          <h4>${esc(p.title)}</h4>
+          <p>${esc(p.excerpt||'')}</p>
+          <span class="blog-date">${fmt(p.date)}</span>
+          <span class="blog-more">Llegir més →</span>
+        </div>`;
+      const open = ()=> openPost(p, fmt);
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', e=>{ if(e.key==='Enter') open(); });
+      grid.appendChild(card);
+    });
+    const modal = document.getElementById('postModal');
+    const close = ()=>{ modal.hidden = true; document.body.style.overflow=''; };
+    document.getElementById('postClose').addEventListener('click', close);
+    modal.addEventListener('click', e=>{ if(e.target===modal) close(); });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
+    function openPost(p, fmt){
+      document.getElementById('postTag').textContent = p.tag||'Club';
+      document.getElementById('postTitle').textContent = p.title;
+      document.getElementById('postDate').textContent = fmt(p.date);
+      const img = document.getElementById('postImg');
+      if(p.image){ img.src = p.image; img.hidden = false; } else { img.hidden = true; }
+      const t = document.getElementById('postText'); t.innerHTML='';
+      (p.body||[p.excerpt||'']).forEach(par=>{ const el=document.createElement('p'); el.textContent=par; t.appendChild(el); });
+      modal.hidden = false; document.body.style.overflow='hidden';
+    }
+  })();
 
   // ---- scroll reveal ----
   const revealEls = document.querySelectorAll('.reveal');
