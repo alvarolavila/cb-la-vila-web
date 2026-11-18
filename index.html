@@ -360,6 +360,8 @@
   .blog-thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 62%;}
   .blog-date{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--paper-dim);}
   .blog-more{margin-top:auto; color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:12px;}
+  .blog-all{text-align:center; margin-top:34px;}
+  .blog-all[hidden]{display:none;}
   .blog-empty{text-align:center; color:var(--paper-dim); padding:30px 0;}
   .blog-empty a{color:var(--gold);}
   .post-modal{position:fixed; inset:0; z-index:1000; background:rgba(8,8,10,.85); display:flex; align-items:center; justify-content:center; padding:20px; overflow-y:auto;}
@@ -634,6 +636,7 @@
     <a href="#historia">Història</a>
     <a href="#hof">Hall of Fame</a>
     <a href="#partners">Partners</a>
+    <a href="premsa.html">Premsa</a>
     <a href="#oficina">Oficina del club</a>
   </nav>
   <div class="nav-cta">
@@ -646,6 +649,7 @@
   <a href="#historia">Història</a>
   <a href="#hof">Hall of Fame</a>
   <a href="#partners">Partners</a>
+  <a href="premsa.html">Premsa</a>
   <a href="#oficina">Oficina del club</a>
 </div>
 
@@ -687,6 +691,7 @@
       <a href="https://www.facebook.com/BasquetLaVila" target="_blank" class="ig-handle">📘 Basquet La Vila</a>
     </div>
     <div class="blog-grid" id="blogGrid"></div>
+    <p class="blog-all" id="blogAll" hidden><a class="btn btn-gold" href="premsa.html">Veure totes les notícies →</a></p>
     <p class="blog-empty" id="blogEmpty" hidden>Aviat publicarem ací les novetats del club. Mentrestant, segueix-nos a <a href="https://www.facebook.com/BasquetLaVila" target="_blank" rel="noopener">Facebook</a> i <a href="https://www.instagram.com/cblavila" target="_blank" rel="noopener">Instagram</a>.</p>
     <div class="post-modal" id="postModal" hidden>
       <div class="post-modal-box" role="dialog" aria-modal="true">
@@ -911,6 +916,8 @@
   </div>
 </footer>
 
+<script src="blog-posts.js"></script>
+<script src="blog.js"></script>
 <script>
   // ---- nav scroll state ----
   const siteNav = document.getElementById('siteNav');
@@ -1038,56 +1045,12 @@
     document.getElementById('formMsg').classList.add('show');
   });
 
-  // ---- BLOG (Sala de premsa) ----
-  // Per afegir una entrada nova, afig un objecte al principi d'esta llista.
-  // image és opcional (ruta tipus "blog/foto.jpg"). body: un text per paràgraf.
-  const BLOG_POSTS = [
-    {date:"2026-11-18", tag:"Viatge", pos:"50% 12%", title:"Viatge a València: el 20 de desembre, al Roig Arena", excerpt:"Organitzem una eixida per a equips femení i masculí amb autobús per veure el Valencia Basket al Roig Arena. Places limitades!", image:"blog/viatge-valencia.jpg", body:["El 20 de desembre viatgem a València! Eixida per als equips femení i masculí, amb autobús inclòs, per viure dos partits del Valencia Basket al Roig Arena.","Preu: 42 € per a socis i 50 € per a no socis. Les places són limitades.","Itinerari:","9:00 · Eixida des del Mercadillo","11:00 · Arribada al Roig Arena","12:00 · VBC masculí vs Laguna Tenerife","Dinar lliure","16:00 · Tornada al Roig Arena","17:00 · VBC femení vs Cadí La Seu","21:00 · Arribada al Mercadillo","Pagament: per transferència bancària (les dades estan al cartell). Cal enviar el justificant de pagament al mòbil del club: 675 31 36 03."]},
-    {date:"2026-11-18", tag:"Loteria", pos:"50% 30%", title:"Ja tenim la Loteria de Nadal del club", excerpt:"El C.B. La Vila té loteria de Nadal amb el número 82057. Últims dies per aconseguir la teua participació!", image:"blog/loteria-nadal.jpg", body:["Ja tenim a la teua disposició la Loteria de Nadal del C.B. La Vila! El número del club és el 82057, per al sorteig de la Loteria Nacional de Nadal del 22 de desembre de 2026. Cada dècim costa 20 euros.","On aconseguir-la: pots adquirir el teu en les oficines d'Ancope Construcciones, en Modas Carmina o al Restaurant Madrid.","També a les oficines del club: dilluns, dimecres i divendres de 18:30h a 20:00h.","Últims dies! No et quedes sense la teua participació."]},
-    {date:"2026-11-18", tag:"Patrocinadors", title:"Visita als nostres patrocinadors", excerpt:"El divendres 6 de novembre vam visitar les empreses i negocis que fan possible el club, i vam acabar amb una foto de grup a la platja del centre.", image:"blog/visita-patrocinadors.jpg", body:["El divendres 6 de novembre vam passar el dia visitant els nostres patrocinadors en les seues empreses i negocis. Volíem agrair-los en persona el suport que ens donen cada temporada: sense ells, el C.B. La Vila no seria possible.","Va ser una jornada molt especial, en què jugadors i jugadores de tots els equips, entrenadors i famílies vam conéixer de prop els llocs de treball de qui creu en el nostre projecte.","Vam acabar el recorregut amb una foto de grup a la platja del centre de la Vila Joiosa, tota la família del club junta. Moltes gràcies a tots els patrocinadors per fer club!"]},
-    {date:"2026-10-25", tag:"Cantera", pos:"50% 35%", title:"Jornades de detecció de talents al Pavelló Maisa Lloret", excerpt:"El diumenge 25 d'octubre el nostre pavelló va acollir les jornades de detecció de talents de la Federació de Bàsquet de la Comunitat Valenciana.", image:"blog/deteccio-talents.jpg", body:["El diumenge 25 d'octubre, el Pavelló Maisa Lloret va acollir les jornades de detecció de talents de la Federació de Bàsquet de la Comunitat Valenciana.","Els horaris van ser els següents: aleví masculí, de 16:30 a 18:00 h, i aleví femení, de 18:15 a 19:45 h.","Vam animar tothom a acostar-se al pavelló per gaudir d'una vesprada de bàsquet i veure en acció les joves promeses del nostre esport.","Som la Vila, som bàsquet!"]},
-    // {date:"2026-11-18", tag:"Club", title:"Títol", excerpt:"Resum curt.", image:"blog/foto.jpg", body:["Paràgraf 1","Paràgraf 2"]},
-  ];
+  // ---- BLOG (Sala de premsa): les 3 darreres notícies; la resta, a premsa.html ----
   (function(){
-    const grid = document.getElementById('blogGrid');
-    const empty = document.getElementById('blogEmpty');
-    const posts = BLOG_POSTS.slice().sort((a,b)=> b.date.localeCompare(a.date));
-    if(!posts.length){ empty.hidden = false; return; }
-    const fmt = d => new Date(d+'T12:00:00').toLocaleDateString('ca-ES',{day:'numeric',month:'long',year:'numeric'});
-    const esc = s => String(s).replace(/[&<>"]/g, ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
-    posts.forEach((p,i)=>{
-      const card = document.createElement('article');
-      card.className = 'blog-card';
-      card.tabIndex = 0;
-      card.innerHTML = `
-        <div class="blog-thumb">${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy"${p.pos ? ` style="object-position:${esc(p.pos)}"` : ''}>` : '<div class="ph-icon">🏀</div>'}</div>
-        <div class="blog-body">
-          <span class="blog-tag">${esc(p.tag||'Club')}</span>
-          <h4>${esc(p.title)}</h4>
-          <p>${esc(p.excerpt||'')}</p>
-          <span class="blog-date">${fmt(p.date)}</span>
-          <span class="blog-more">Llegir més →</span>
-        </div>`;
-      const open = ()=> openPost(p, fmt);
-      card.addEventListener('click', open);
-      card.addEventListener('keydown', e=>{ if(e.key==='Enter') open(); });
-      grid.appendChild(card);
-    });
-    const modal = document.getElementById('postModal');
-    const close = ()=>{ modal.hidden = true; document.body.style.overflow=''; };
-    document.getElementById('postClose').addEventListener('click', close);
-    modal.addEventListener('click', e=>{ if(e.target===modal) close(); });
-    document.addEventListener('keydown', e=>{ if(e.key==='Escape') close(); });
-    function openPost(p, fmt){
-      document.getElementById('postTag').textContent = p.tag||'Club';
-      document.getElementById('postTitle').textContent = p.title;
-      document.getElementById('postDate').textContent = fmt(p.date);
-      const img = document.getElementById('postImg');
-      if(p.image){ img.src = p.image; img.hidden = false; } else { img.hidden = true; }
-      const t = document.getElementById('postText'); t.innerHTML='';
-      (p.body||[p.excerpt||'']).forEach(par=>{ const el=document.createElement('p'); el.textContent=par; t.appendChild(el); });
-      modal.hidden = false; document.body.style.overflow='hidden';
-    }
+    const posts = CBBlog.sorted();
+    if(!posts.length){ document.getElementById('blogEmpty').hidden = false; return; }
+    CBBlog.render(document.getElementById('blogGrid'), posts.slice(0,3));
+    if(posts.length > 3) document.getElementById('blogAll').hidden = false;
   })();
 
   // ---- scroll reveal ----
