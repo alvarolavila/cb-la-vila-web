@@ -364,7 +364,7 @@
   .post-modal{position:fixed; inset:0; z-index:1000; background:rgba(8,8,10,.85); display:flex; align-items:center; justify-content:center; padding:20px; overflow-y:auto;}
   .post-modal[hidden]{display:none;}
   .post-modal-box{background:var(--ink-2); border:1px solid var(--line); border-radius:8px; max-width:720px; width:100%; max-height:90vh; overflow-y:auto; position:relative;}
-  .post-modal-box img{width:100%; max-height:420px; object-fit:cover; object-position:50% 62%; display:block;}
+  .post-modal-box img{width:100%; max-height:min(70vh,560px); object-fit:contain; background:#0a0a0c; display:block;}
   .post-modal-body{padding:26px 28px 32px;}
   .post-modal-body h3{font-family:'Anton',sans-serif; font-size:clamp(24px,4vw,34px); color:var(--paper); text-transform:uppercase; margin:8px 0 4px; font-weight:400;}
   .post-date{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--paper-dim); margin-bottom:18px;}
@@ -1028,6 +1028,7 @@
   // Per afegir una entrada nova, afig un objecte al principi d'esta llista.
   // image és opcional (ruta tipus "blog/foto.jpg"). body: un text per paràgraf.
   const BLOG_POSTS = [
+    {date:"2026-11-18", tag:"Loteria", pos:"50% 30%", title:"Ja tenim la Loteria de Nadal del club", excerpt:"El C.B. La Vila té loteria de Nadal amb el número 82057. Últims dies per aconseguir la teua participació!", image:"blog/loteria-nadal.jpg", body:["Ja tenim a la teua disposició la Loteria de Nadal del C.B. La Vila! El número del club és el 82057, per al sorteig de la Loteria Nacional de Nadal del 22 de desembre de 2026. Cada dècim costa 20 euros.","On aconseguir-la: pots adquirir el teu en les oficines d'Ancope Construcciones, en Modas Carmina o al Restaurant Madrid.","També a les oficines del club: dilluns, dimecres i divendres de 18:30h a 20:00h.","Últims dies! No et quedes sense la teua participació."]},
     {date:"2026-11-18", tag:"Patrocinadors", title:"Visita als nostres patrocinadors", excerpt:"El divendres 6 de novembre vam visitar les empreses i negocis que fan possible el club, i vam acabar amb una foto de grup a la platja del centre.", image:"blog/visita-patrocinadors.jpg", body:["El divendres 6 de novembre vam passar el dia visitant els nostres patrocinadors en les seues empreses i negocis. Volíem agrair-los en persona el suport que ens donen cada temporada: sense ells, el C.B. La Vila no seria possible.","Va ser una jornada molt especial, en què jugadors i jugadores de tots els equips, entrenadors i famílies vam conéixer de prop els llocs de treball de qui creu en el nostre projecte.","Vam acabar el recorregut amb una foto de grup a la platja del centre de la Vila Joiosa, tota la família del club junta. Moltes gràcies a tots els patrocinadors per fer club!"]},
     // {date:"2026-11-18", tag:"Club", title:"Títol", excerpt:"Resum curt.", image:"blog/foto.jpg", body:["Paràgraf 1","Paràgraf 2"]},
   ];
@@ -1043,7 +1044,7 @@
       card.className = 'blog-card';
       card.tabIndex = 0;
       card.innerHTML = `
-        <div class="blog-thumb">${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : '<div class="ph-icon">🏀</div>'}</div>
+        <div class="blog-thumb">${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy"${p.pos ? ` style="object-position:${esc(p.pos)}"` : ''}>` : '<div class="ph-icon">🏀</div>'}</div>
         <div class="blog-body">
           <span class="blog-tag">${esc(p.tag||'Club')}</span>
           <h4>${esc(p.title)}</h4>
