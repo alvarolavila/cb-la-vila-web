@@ -356,15 +356,15 @@
   }
   .blog-card{cursor:pointer; transition:transform .2s ease, border-color .2s ease;}
   .blog-card:hover{transform:translateY(-4px); border-color:var(--gold);}
-  .blog-thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .blog-thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 62%;}
   .blog-date{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--paper-dim);}
   .blog-more{margin-top:auto; color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:12px;}
   .blog-empty{text-align:center; color:var(--paper-dim); padding:30px 0;}
   .blog-empty a{color:var(--gold);}
-  .post-modal{position:fixed; inset:0; z-index:200; background:rgba(8,8,10,.85); display:flex; align-items:center; justify-content:center; padding:20px; overflow-y:auto;}
+  .post-modal{position:fixed; inset:0; z-index:1000; background:rgba(8,8,10,.85); display:flex; align-items:center; justify-content:center; padding:20px; overflow-y:auto;}
   .post-modal[hidden]{display:none;}
   .post-modal-box{background:var(--ink-2); border:1px solid var(--line); border-radius:8px; max-width:720px; width:100%; max-height:90vh; overflow-y:auto; position:relative;}
-  .post-modal-box img{width:100%; max-height:380px; object-fit:cover; display:block;}
+  .post-modal-box img{width:100%; max-height:420px; object-fit:cover; object-position:50% 62%; display:block;}
   .post-modal-body{padding:26px 28px 32px;}
   .post-modal-body h3{font-family:'Anton',sans-serif; font-size:clamp(24px,4vw,34px); color:var(--paper); text-transform:uppercase; margin:8px 0 4px; font-weight:400;}
   .post-date{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--paper-dim); margin-bottom:18px;}
@@ -1028,6 +1028,7 @@
   // Per afegir una entrada nova, afig un objecte al principi d'esta llista.
   // image és opcional (ruta tipus "blog/foto.jpg"). body: un text per paràgraf.
   const BLOG_POSTS = [
+    {date:"2026-11-18", tag:"Patrocinadors", title:"Visita als nostres patrocinadors", excerpt:"El divendres 6 de novembre vam visitar les empreses i negocis que fan possible el club, i vam acabar amb una foto de grup a la platja del centre.", image:"blog/visita-patrocinadors.jpg", body:["El divendres 6 de novembre vam passar el dia visitant els nostres patrocinadors en les seues empreses i negocis. Volíem agrair-los en persona el suport que ens donen cada temporada: sense ells, el C.B. La Vila no seria possible.","Va ser una jornada molt especial, en què jugadors i jugadores de tots els equips, entrenadors i famílies vam conéixer de prop els llocs de treball de qui creu en el nostre projecte.","Vam acabar el recorregut amb una foto de grup a la platja del centre de la Vila Joiosa, tota la família del club junta. Moltes gràcies a tots els patrocinadors per fer club!"]},
     // {date:"2026-11-18", tag:"Club", title:"Títol", excerpt:"Resum curt.", image:"blog/foto.jpg", body:["Paràgraf 1","Paràgraf 2"]},
   ];
   (function(){
