@@ -355,11 +355,13 @@
     font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--paper-dim); line-height:1.7;
   }
   .blog-feed-embed{
-    width:100%; max-width:720px; margin:0 auto; border-radius:6px; overflow:hidden;
+    width:100%; max-width:500px; margin:0 auto; border-radius:6px; overflow:hidden;
     border:1px solid var(--line); background:var(--ink-2);
     min-height:260px; display:flex; align-items:center; justify-content:center;
   }
   .blog-feed-embed iframe{width:100%; border:0; display:block;}
+  .blog-feed-fallback{text-align:center; margin-top:18px; font-family:'JetBrains Mono',monospace; font-size:13px;}
+  .blog-feed-fallback a{color:var(--gold);}
   .blog-feed-placeholder{
     color:var(--paper-dim); font-family:'JetBrains Mono',monospace; font-size:13px; padding:40px 20px; text-align:center;
   }
@@ -680,9 +682,10 @@
       <a href="https://www.facebook.com/BasquetLaVila" target="_blank" class="ig-handle">📘 Basquet La Vila</a>
     </div>
     <div class="blog-feed-embed reveal" id="fbFeedEmbed"
-      data-fb-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FBasquetLaVila&tabs=timeline&width=700&height=700&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&color_scheme=dark">
+      data-fb-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FBasquetLaVila&tabs=timeline&width=500&height=700&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true">
       <div class="blog-feed-placeholder">📘 Carregant publicacions de Facebook…</div>
     </div>
+    <p class="blog-feed-fallback"><a href="https://www.facebook.com/BasquetLaVila" target="_blank" rel="noopener">Veure totes les publicacions a Facebook →</a> · <a href="https://www.instagram.com/cblavila" target="_blank" rel="noopener">Instagram @cblavila →</a></p>
   </div>
 </section>
 
@@ -1016,7 +1019,8 @@
         if(en.isIntersecting){
           const iframe = document.createElement('iframe');
           iframe.src = fbFeedEmbed.dataset.fbSrc;
-          iframe.width = '100%';
+          iframe.width = '500';
+          iframe.style.maxWidth = '100%';
           iframe.height = '700';
           iframe.style.border = 'none';
           iframe.style.overflow = 'hidden';
